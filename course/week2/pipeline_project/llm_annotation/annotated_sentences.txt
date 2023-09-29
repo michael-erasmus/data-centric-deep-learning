@@ -1,0 +1,271 @@
+Input: The marathon runner achieved a personal best in the city marathon.
+Output: sports
+
+Input: The amendment to the constitution was approved after rigorous discussions in the assembly.
+Output: politics
+
+Input: The detection of gravitational waves opened a new chapter in astrophysics.
+Output: science
+
+Input: The sprinter set a new national record in the 200-meter dash.
+Output: sports
+
+Input: The proposed act gained unanimous approval and was ratified by the governor.
+Output: politics
+
+Input: New research on dark matter has altered our comprehension of the universe.
+Output: science
+
+Input: The satellite was launched into orbit without any hitches.
+Output: science
+
+Input: The diver impressed the judges and secured a silver medal.
+Output: sports
+
+Input: After intense discussions
+Output: politics
+
+Input: Biologists discovered a new species of frog
+Output: science
+
+Input: The basketball team clinched the championship after a nail-biting final.
+Output: sports
+
+Input: The proposal for tax reforms faced heated debates in the parliament.
+Output: politics
+
+Input: The revelation of a new exoplanet has excited astronomers globally.
+Output: science
+
+Input: The cyclist triumphed in the mountain stage of the tour.
+Output: sports
+
+Input: The education reform was implemented following a unanimous vote by the committee.
+Output: politics
+
+Input: Recent studies on quantum mechanics are reshaping our knowledge of the subatomic world.
+Output: science
+
+Input: The rover sent back stunning images from the Martian surface.
+Output: science
+
+Input: The weightlifter secured a new record in the heavyweight category.
+Output: sports
+
+Input: The diplomatic summit concluded with a joint declaration by the participating countries.
+Output: politics
+
+Input: Oceanographers reported the discovery of the deepest underwater cave.
+Output: science
+
+Input: The soccer team lifted the trophy after a thrilling penalty shootout.
+Output: sports
+
+Input: The new environmental policy faced scrutiny in the town hall meeting.
+Output: politics
+
+Input: The unveiling of a new galaxy has left the scientific community in awe.
+Output: science
+
+Input: The race car driver clinched the title in the final lap of the race.
+Output: sports
+
+Input: The health bill was passed after lengthy consultations with experts.
+Output: politics
+
+Input: Groundbreaking research on stem cells promises a revolution in medical treatments.
+Output: science
+
+Input: The probe successfully entered the orbit of Jupiter.
+Output: science
+
+Input: The figure skater mesmerized everyone with her performance and won gold.
+Output: sports
+
+Input: The disarmament pact was ratified by major nuclear powers.
+Output: politics
+
+Input: Archaeologists unearthed an ancient city
+Output: science
+
+Input: The hockey team emerged victorious after a closely contested match.
+Output: sports
+
+Input: The judiciary reforms sparked widespread debates across the nation.
+Output: politics
+
+Input: The identification of a new comet has stargazers eagerly awaiting its passage.
+Output: science
+
+Input: The mountaineer reached the summit despite adverse weather conditions.
+Output: sports
+
+Input: The infrastructure bill was approved with a significant majority in the council.
+Output: politics
+
+Input: The latest insights into neural networks are advancing artificial intelligence research.
+Output: science
+
+Input: The telescope captured breathtaking images of a distant nebula.
+Output: science
+
+Input: The boxer won the championship belt in a thrilling bout.
+Output: sports
+
+Input: Trade agreements were finalized after years of negotiations.
+Output: politics
+
+Input: Paleontologists discovered a dinosaur fossil that challenges established theories.
+Output: science
+
+Input: The football team clinched their first victory of the season.
+Output: sports
+
+Input: The data protection law was passed after concerns about privacy breaches.
+Output: politics
+
+Input: The spotting of a rare bird species has birdwatchers flocking to the region.
+Output: science
+
+Input: The surfer conquered a monstrous wave at the international competition.
+Output: sports
+
+Input: The defense bill was greenlit after thorough evaluations by the military.
+Output: politics
+
+Input: Pioneering research on renewable energy sources promises a greener future.
+Output: science
+
+Input: The drone successfully completed its reconnaissance mission.
+Output: science
+
+Input: The ballet dancer received a standing ovation for her emotive performance.
+Output: sports
+
+Input: After protracted talks
+Output: politics
+
+Input: The botanists found a plant species believed to be extinct.
+Output: science
+
+Input: The baseball team sealed their victory with a grand slam.
+Output: sports
+
+Input: The urban development plan was rolled out after public consultations.
+Output: politics
+
+Input: The spotting of a supernova has reignited interest in stellar phenomena.
+Output: science
+
+Input: The triathlete completed the grueling race with a record time.
+Output: sports
+
+Input: The agricultural reforms were endorsed after assessing their impact on farmers.
+Output: politics
+
+Input: Recent innovations in biotechnology are heralding a new age of medicine.
+Output: science
+
+Input: The aircraft made its maiden voyage without any hitches.
+Output: science
+
+Input: The pianist enchanted the audience with his virtuoso performance.
+Output: sports
+
+Input: The free trade agreement was signed
+Output: politics
+
+Input: The zoologists reported the sighting of a rare mammal in the wild.
+Output: science
+
+Input: The tennis player clinched the grand slam title after a five-set thriller.
+Output: sports
+
+Input: The digital currency regulation faced heated debates in the financial sector.
+Output: politics
+
+Input: The observation of a meteor shower is expected to peak next week.
+Output: science
+
+Input: The golfer secured his first major title with a birdie on the final hole.
+Output: sports
+
+Input: The immigration bill was passed
+Output: politics
+
+Input: Pioneering work on genetics has opened the door to personalized medicine.
+Output: science
+
+Input: The submarine explored the uncharted depths of the Mariana Trench.
+Output: science
+
+Input: The violinist's solo brought tears to the eyes of many in the concert hall.
+Output: sports
+
+Input: The nations reached a consensus on combating climate change.
+Output: politics
+
+Input: The geologists reported seismic activities hinting at a dormant volcano.
+Output: science
+
+Input: The rugby team scored a last-minute try to seal their victory.
+Output: sports
+
+Input: The broadcasting reforms were implemented to ensure unbiased media coverage.
+Output: politics
+
+Input: The sighting of the lunar eclipse has been deemed a once-in-a-lifetime event.
+Output: science
+
+Input: The equestrian won gold in the dressage event.
+Output: sports
+
+Input: The transportation bill was approved to enhance urban mobility.
+Output: politics
+
+Input: Recent advances in nanotechnology are transforming industries.
+Output: science
+
+Input: The spacecraft sent back images from the edge of the solar system.
+Output: science
+
+Input: The opera singer received a rapturous applause for her rendition.
+Output: sports
+
+Input: The nations resolved territorial disputes after decades of contention.
+Output: politics
+
+Input: The ornithologists tracked the migratory patterns of endangered birds.
+Output: science
+
+Input: The basketball player scored the game-winning basket in the final seconds.
+Output: sports
+
+Input: The electoral reforms aimed to ensure transparent and fair elections.
+Output: politics
+
+Input: The identification of a new asteroid has astronomers calculating its trajectory.
+Output: science
+
+Input: The skier secured a podium finish in the downhill event.
+Output: sports
+
+Input: The economic policy was rolled out to boost
+
+ the nation's GDP.
+Output: politics
+
+Input: Breakthroughs in robotics are paving the way for automation in various sectors.
+Output: science
+
+Input: The observatory reported unusual solar flares that might impact Earth's magnetosphere.
+Output: science
+
+Input: The chess player clinched the world championship in a nail-biting finale.
+Output: sports
+
+Input: The nations endorsed a pact to ensure clean oceans.
+Output: politics
+
+Input: The marine biologists documented the behavior of elusive deep-sea creatures.
+Output: science
