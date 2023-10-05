@@ -9,7 +9,7 @@ from celery import Task, Celery
 from src.system import DigitClassifierSystem
 from consts import MODEL_PATH, BROKER_URL, BACKEND_URL
 
-# This creates a Celery instance: we specify it to look at the 
+# This creates a Celery instance: we specify it to look at the
 # `tasks.py` file and to use Redis as the broker and backend.
 app = Celery('tasks', broker=BROKER_URL, backend=BACKEND_URL)
 
@@ -23,7 +23,7 @@ class PredictionTask(Task):
     self.system = None
 
   def __call__(self, *args, **kwargs):
-    r"""Load lightning system on first call. This way we do not need to 
+    r"""Load lightning system on first call. This way we do not need to
     load the system on every task request, which quickly gets expensive.
     """
     if self.system is None:
@@ -31,26 +31,29 @@ class PredictionTask(Task):
       self.system = self.get_system()
       print('Loading successful.')
 
-    # pass arguments through 
+    # pass arguments through
     return self.run(*args, **kwargs)
-  
+
   def get_system(self):
     system = None
     # ================================
     # FILL ME OUT
-    # 
-    # Load the checkpoint in `MODEL_PATH` using the class 
+    #
+    # Load the checkpoint in `MODEL_PATH` using the class
     # `DigitClassifierSystem`. Store in the variable `system`.
-    # 
+    #
     # Pseudocode:
     # --
     # system = ...
-    # 
+    #
     # Types:
     # --
     # system: DigitClassifierSystem
     # ================================
+    system = DigitClassifierSystem.load_from_checkpoint(MODEL_PATH)
+
     assert system is not None, "System is not loaded."
+
     return system.eval()
 
 
@@ -59,7 +62,7 @@ class PredictionTask(Task):
           base=PredictionTask)
 def predict_single(self, data):
   r"""Defines what `PredictionTask.run` should do.
-  
+
   In this case, it will use the loaded LightningSystem to compute
   the forward pass and make a prediction.
 
@@ -73,7 +76,7 @@ def predict_single(self, data):
     probs (list[float]): list of probabilities for each MNIST class.
     label (int): predicted class (one with highest probability).
   """
-  # image I/O can be very expensive. Put this in worker so we don't 
+  # image I/O can be very expensive. Put this in worker so we don't
   # stall on it in FastAPI
   im = Image.open(data)
   im: Image = im.convert('L')  # convert to grayscale
@@ -92,17 +95,18 @@ def predict_single(self, data):
     logits = None
     # ================================
     # FILL ME OUT
-    # 
+    #
     # Copy over your solution from `week3_fastapi/api.py`.
-    # 
+    #
     # Pseudocode:
     # --
     # logits = ... (use system)
-    # 
+    #
     # Types:
     # --
     # logits: torch.Tensor (shape: 1x10)
     # ================================
+    logits = self.system.predict_step(im)
     assert logits is not None, "logits is not defined."
 
     # To extract the label, just find the largest logit.
@@ -112,17 +116,19 @@ def predict_single(self, data):
     probs = None
     # ================================
     # FILL ME OUT
-    # 
+    #
     # Copy over your solution from `week3_fastapi/api.py`.
-    # 
+    #
     # Pseudocode:
     # --
     # probs = ...do something to logits...
-    # 
+    #
     # Types:
     # --
     # probs: torch.Tensor (shape: 1x10)
     # ================================
+    probs = torch.softmax(logits, dim=1)
+
     assert probs is not None, "probs is not defined."
     probs = probs.squeeze(0)        # squeeze to (10) shape
     probs = probs.numpy().tolist()  # convert tensor to list
@@ -131,11 +137,11 @@ def predict_single(self, data):
   results['label'] = label
 
   # ================================
-  # NOTE: simulate hard computation! This will help motivate 
+  # NOTE: simulate hard computation! This will help motivate
   # why we need Celery.
-  # 
+  #
   # Uncomment me when you are told to in the notes!
-  # time.sleep(5)
+  time.sleep(5)
   # ================================
 
   return results
