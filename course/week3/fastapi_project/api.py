@@ -26,24 +26,24 @@ class InferenceInput(BaseModel):
   r"""Input values for model inference. We will expect the image to be passed
   to us as a URL that we download.
   """
-  image_url: str = Field(..., 
-    example = 'https://machinelearningmastery.com/wp-content/uploads/2019/02/sample_image.png', 
+  image_url: str = Field(...,
+    example = 'https://machinelearningmastery.com/wp-content/uploads/2019/02/sample_image.png',
     title = 'url to handwritten digit')
 
 
 class InferenceResult(BaseModel):
   r"""Inference outputs from the model."""
-  # Two expected return fields: a label (integer) and a probability 
+  # Two expected return fields: a label (integer) and a probability
   # vector - a list of 10 numbers that sum to one.
   label: int = Field(..., example = 0, title = 'Predicted label for image')
-  probs: List[float] = Field(..., example = [0.1] * 10, 
+  probs: List[float] = Field(..., example = [0.1] * 10,
     title='Predicted probability for predicted label')
 
 
 class InferenceResponse(BaseModel):
   r"""Output response for model inference."""
   error: str = Field(..., example=False, title='error?')
-  results: Dict[str, Any] = Field(..., example={}, 
+  results: Dict[str, Any] = Field(..., example={},
     title='label and probability results')
 
 
@@ -95,7 +95,7 @@ def predict(request: Request, body: InferenceInput):
 
   system = app.package['system']
   results: Dict[str, Any] = {'label': None, 'probs': None}
-  
+
   im: Image = Image.open(local_path)
   im: Image = im.convert('L')  # convert to grayscale
 
@@ -105,31 +105,31 @@ def predict(request: Request, body: InferenceInput):
     transforms.CenterCrop(28),
     transforms.ToTensor(),
   ])
-  
-  # HINT: Don't forget that the `system` expects minibatches. Even if 
+
+  # HINT: Don't forget that the `system` expects minibatches. Even if
   # you are only passing in one element, it must be of shape 1x1x28x28.
   im = im_transforms(im)
   im = im.unsqueeze(0)
 
   with torch.no_grad():
-    logits = None
+    logits = system.predict_step(im)
 
     # ================================
     # FILL ME OUT
-    # 
+    #
     # Use `system` to make a prediction on the input `im` and
     # save it to the variable `logits`. The output should be of
     # shape `(1, 10)`.
-    # 
+    #
     # HINT: there is no data module here. Which method should you use
-    # from system to make a prediction? 
-    # 
-    # Our solution is one of code. 
-    # 
+    # from system to make a prediction?
+    #
+    # Our solution is one of code.
+    #
     # Pseudocode:
     # --
     # logits = ... (use system)
-    # 
+    #
     # Types:
     # --
     # logits: torch.Tensor (shape: 1x10)
@@ -139,18 +139,18 @@ def predict(request: Request, body: InferenceInput):
     label = torch.argmax(logits, dim=1)  # shape (1)
     label = label.item()                 # tensor -> integer
 
-    probs = None
+    probs = torch.softmax(logits, dim=1)
     # ================================
     # FILL ME OUT
-    # 
-    # Normalize `logits` to probabilities and save it to the 
-    # variable `probs`. Remember `logits` is shape (1, 10), and 
+    #
+    # Normalize `logits` to probabilities and save it to the
+    # variable `probs`. Remember `logits` is shape (1, 10), and
     # we expect your output `probs` to be shape (1, 10) as well.
-    # 
+    #
     # Pseudocode:
     # --
     # probs = ...do something to logits...
-    # 
+    #
     # Types:
     # --
     # probs: torch.Tensor (shape: 1x10)

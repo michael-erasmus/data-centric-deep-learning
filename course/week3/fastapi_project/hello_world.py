@@ -6,3 +6,6 @@ app = FastAPI()
 def home():
   return "Hello World"
 
+@app.get("/random")
+def random():
+  return "random"
