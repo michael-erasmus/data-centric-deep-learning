@@ -5,19 +5,18 @@ from sklearn.isotonic import IsotonicRegression
 
 
 def get_ks_score(tr_probs, te_probs):
-  score = None
   # ============================
   # FILL ME OUT
-  # 
+  #
   # Compute the p-value from the Kolmogorov-Smirnov test.
   # You may use the imported `ks_2samp`.
-  # 
+  #
   # Pseudocode:
   # --
   # convert tr_prob to numpy
   # convert te_prob to numpy
   # apply ks_2samp
-  # 
+  #
   # Type:
   # --
   # tr_probs: torch.Tensor
@@ -26,23 +25,46 @@ def get_ks_score(tr_probs, te_probs):
   #   predicted probabilities from test test
   # score: float - between 0 and 1
   # ============================
+  _, score = ks_2samp(tr_probs.cpu().numpy(), te_probs.cpu().numpy())
+  print(f"SCORE: {score}")
   return score
 
 
 def get_hist_score(tr_probs, te_probs, bins=10):
-  score = None
+  tr_probs_np = tr_probs.detach().numpy()
+  te_probs_np = te_probs.detach().numpy()
+
+  # Create histogram for training probabilities
+  tr_heights, bin_edges = np.histogram(tr_probs_np, bins=bins, density=True)
+
+  # Create histogram for test probabilities with the same bin edges
+  te_heights, _ = np.histogram(te_probs_np, bins=bin_edges, density=True)
+
+  score = 0
+  # Loop through bins to compute the histogram intersection score
+  for i in range(len(bin_edges) - 1):
+      bin_diff = bin_edges[i + 1] - bin_edges[i]
+
+      # Compute area under the histogram within the bin for training and test probabilities
+      tr_area = bin_diff * tr_heights[i]
+      te_area = bin_diff * te_heights[i]
+
+      # Compute the intersection and add to the score
+      intersect = min(tr_area, te_area)
+      score += intersect
+
   # ============================
   # FILL ME OUT
-  # 
-  # Compute histogram intersection score. 
-  # 
+  #
+  # Compute histogram intersection score.
+  #
   # Pseudocode:
   # --
   # tr_heights, bin_edges = make histogram using tr_probs
   #   important for `density = True`.
-  # te_heights, _ = make histogram using te_probs with the same 
+  # te_heights, _ = make histogram using te_probs with the same
   #   bin edges set to `bin_edges`. St `density = True`.
-  # 
+  #
   # score = 0
   # loop though bins by index i
   #   bin_diff = bin_end - bin_start
@@ -50,7 +72,7 @@ def get_hist_score(tr_probs, te_probs, bins=10):
   #   te_area = bin_diff * te_heights[i]
   #   intersect = min(tr_area, te_area)
   #   score = score + intersect
-  # 
+  #
   # Type:
   # --
   # tr_probs: torch.Tensor
@@ -58,13 +80,13 @@ def get_hist_score(tr_probs, te_probs, bins=10):
   # te_probs: torch.Tensor
   #   predicted probabilities from test test
   # score: float - between 0 and 1
-  # 
+  #
   # Notes:
   # --
   # Remember to normalize the histogram so heights
-  # sum to one. See `np.histogram`. Also remember to 
-  # use the same bins for `tr_probs` and `te_probs`. 
-  # 
+  # sum to one. See `np.histogram`. Also remember to
+  # use the same bins for `tr_probs` and `te_probs`.
+  #
   # Read the documentation for `np.histogram` carefully, in
   # particular what `bin_edges` represent.
   # ============================
@@ -73,21 +95,24 @@ def get_hist_score(tr_probs, te_probs, bins=10):
 
 def get_vocab_outlier(tr_vocab, te_vocab):
   score = None
+  num_seen = sum(1 for word in te_vocab if word in tr_vocab)
+  num_total = len(te_vocab)
+  score = 1 - (num_seen / num_total)
   # ============================
   # FILL ME OUT
-  # 
+  #
   # Compute the percentage of the test vocabulary
   # that does not appear in the training vocabulary. A score
   # of 0 would mean all of the words in the test vocab
   # appear in the training vocab. A score of 1 would mean
-  # none of the new words have been seen before. 
-  # 
+  # none of the new words have been seen before.
+  #
   # Pseudocode:
   # --
   # num_seen = ...
   # num_total = ...
   # score = 1 - (num_seen / num_total)
-  # 
+  #
   # Type:
   # --
   # tr_vocab: dict[str, int]
@@ -109,33 +134,39 @@ class MonitoringSystem:
   def calibrate(self, tr_probs, tr_labels, te_probs):
     tr_probs_cal = None
     te_probs_cal = None
+
+    iso_reg = IsotonicRegression(out_of_bounds='clip')
+    tr_probs_cal = iso_reg.fit_transform(tr_probs.numpy(), tr_labels.numpy())
+    te_probs_cal = iso_reg.transform(te_probs.numpy())
+
     # ============================
     # FILL ME OUT
-    # 
-    # Calibrate probabilities with isotonic regression using 
-    # the training probabilities and labels. 
-    # 
+    #
+    # Calibrate probabilities with isotonic regression using
+    # the training probabilities and labels.
+    #
     # Pseudocode:
     # --
     # use IsotonicRegression(out_of_bounds='clip')
     #   See documentation for `out_of_bounds` description.
     # tr_probs_cal = fit calibration model
     # te_probs_cal = evaluate using fitted model
-    # 
+    #
     # Type:
     # --
     # `tr_probs_cal`: torch.Tensor. Note that sklearn
-    # returns a NumPy array. You will need to cast 
+    # returns a NumPy array. You will need to cast
     # it to a torch.Tensor.
-    # 
+    #
     # `te_probs_cal`: torch.Tensor
     # ============================
-    return tr_probs_cal, te_probs_cal
+
+    return torch.from_numpy(tr_probs_cal), torch.from_numpy(te_probs_cal)
 
   def monitor(self, te_vocab, te_probs):
     tr_probs, te_probs = self.calibrate(self.tr_probs, self.tr_labels, te_probs)
 
-    # compute metrics. 
+    # compute metrics.
     ks_score = get_ks_score(tr_probs, te_probs)
     hist_score = get_hist_score(tr_probs, te_probs)
     outlier_score = get_vocab_outlier(self.tr_vocab, te_vocab)

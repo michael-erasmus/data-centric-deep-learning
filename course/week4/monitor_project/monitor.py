@@ -8,6 +8,9 @@ from src.dataset import ProductReviewStream, ProductReviewEmbeddings
 from src.systems import SentimentClassifierSystem
 from src.paths import LOG_DIR
 
+ks_scores = []
+hist_scores = []
+outlier_scores = []
 
 def main(args):
   rs = np.random.RandomState(42)
@@ -27,6 +30,8 @@ def main(args):
   # and predicted probabilities.
   monitor = MonitoringSystem(tr_vocab, tr_probs, tr_labels)
 
+
+
   for index in range(1, 9):
     te_ds = ProductReviewStream(index)
     te_dl = DataLoader(te_ds, batch_size=128, shuffle=False, num_workers=4)
@@ -36,7 +41,7 @@ def main(args):
     results = None
 
     # Compute monitored results.
-    # 
+    #
     # results: Dict[str, Any] - results from monitoring
     #   keys:
     #   --
@@ -49,10 +54,14 @@ def main(args):
       print('\n==========================')
       print(f'STREAM ({index} out of 8)')
       print('==========================')
-      print(f'KS test p-value: {results["ks_score"]:.3f}')
+      print(f'KS test p-value: {results["ks_score"]:.4f}')
       print(f'Histogram intersection: {results["hist_score"]:.3f}')
       print(f'OOD Vocab %: {results["outlier_score"]*100:.2f}')
       print('')  # new line
+
+      ks_scores.append(results['ks_score'])
+      hist_scores.append(results['hist_score'])
+      outlier_scores.append(results['outlier_score'])
 
 
 def get_probs(system, loader):
@@ -75,3 +84,6 @@ if __name__ == "__main__":
   parser.add_argument('ckpt', type=str, help='path to checkpoint file')
   args = parser.parse_args()
   main(args)
+  print(f"{ks_scores=}")
+  print(f"{hist_scores=}")
+  print(f"{outlier_scores=}")
